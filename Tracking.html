@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Vehicle Tracking (Live Map) | MOTOMATRIX</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css" />
@@ -47,7 +47,7 @@
     }
 
     button {
-      background-color: #007bff;
+      background-color: #0b5394;
       color: white;
       border: none;
       border-radius: 5px;
@@ -71,70 +71,21 @@
     .vehicle-item {
       margin-bottom: 10px;
     }
-
-    .logo img {
-      height: 40px;
-    }
-
-    .navbar {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      padding: 1rem 0;
-      background-color: #111;
-    }
-
-    .navbar a, .dropbtn {
-      color: white;
-      text-decoration: none;
-      padding: 0.5rem 1rem;
-    }
-
-    .dropdown {
-      position: relative;
-    }
-
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: white;
-      min-width: 160px;
-      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-      z-index: 1;
-    }
-
-    .dropdown-content a {
-      color: black;
-      padding: 0.5rem 1rem;
-      display: block;
-      text-decoration: none;
-    }
-
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
-
-    .nav-btn {
-      background-color: #007bff;
-      border-radius: 5px;
-    }
   </style>
 </head>
 <body>
 
-
   <script type="module" src="auth-check.js"></script>
-
    <!-- HEADER + NAVBAR -->
    <header class="top-header">
-
-  <!-- HEADER + NAVBAR -->
-  <header class="top-header">
     <div class="logo">
-      <a href="index.html">
-        <img src="images/img2.png" alt="Fleet Management" class="logo-img" />
-      </a>
-    </div>
+        <a href="index.html">
+          <img src="images/img2.png" alt="Fleet Management" class="logo-img" />
+        </a>
+      </div>
+      
+      
+      
     <nav class="navbar">
       <a href="index.html">Home</a>
       <div class="dropdown">
@@ -148,10 +99,11 @@
           <a href="emergency.html">Emergency Response System</a>
         </div>
       </div>
+      
       <a href="Tracking.html">Tracking</a>
-      <a href="Driver.html">Drivers</a>
+      <a href="Drivers.html">Drivers</a>
       <a href="Contact.html">Contact</a>
-      <a href="login.html" class="nav-btn">Login</a>
+      <a href="signout.html" class="nav-btn">Sign out</a>
     </nav>
   </header>
 
@@ -174,45 +126,86 @@
     </div>
   </div>
 
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-content">
+    <div>
+      <h2>MOTOMATRIX</h2>
+      <p>Efficient fleet management for smart logistics.</p>
+    </div>
+    <div>
+      <h4>Quick Links</h4>
+      <ul>
+        <li>Home</li>
+        <li>Features</li>
+        <li>About</li>
+        <li>Contact</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Support</h4>
+      <ul>
+        <li>Help Center</li>
+        <li>FAQs</li>
+        <li>Report Issue</li>
+      </ul>
+    </div>
+    <div class="footer-actions">
+      <h4>Stay Connected</h4>
+      <a href="#">Twitter</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">Instagram</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2025 MOTOMATRIX. All rights reserved.
+  </div>
+</footer>
+
+
+
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
     const form = document.getElementById('vehicleForm');
     const vehicleData = document.getElementById('vehicleData');
     let vehicleCount = 0;
-
-    const map = L.map('map').setView([20.5937, 78.9629], 5);
-
+  
+    // Initialize Leaflet map
+    const map = L.map('map').setView([20.5937, 78.9629], 5); // Centered on India
+  
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors'
     }).addTo(map);
-
+  
     form.addEventListener('submit', function(e) {
       e.preventDefault();
-
+  
       const make = document.getElementById('make').value;
       const model = document.getElementById('model').value;
       const license = document.getElementById('license').value;
       const mileage = document.getElementById('mileage').value;
-
+  
       const vehicleId = `Vehicle-${vehicleCount++}`;
-
+  
       // Add to vehicle list
       const info = document.createElement('div');
       info.classList.add('vehicle-item');
       info.innerText = `${vehicleId}: ${make} ${model}, License: ${license}, Mileage: ${mileage} km`;
       vehicleData.appendChild(info);
-
-      // Place a draggable marker on the map
-      const lat = 20 + Math.random();
+  
+      // Place a draggable marker on the map (randomized start position)
+      const lat = 20 + Math.random();  // Simulated location
       const lng = 78 + Math.random();
-      const marker = L.marker([lat, lng], { draggable: true }).addTo(map);
-
+      const marker = L.marker([lat, lng], {
+        draggable: true
+      }).addTo(map);
+  
       marker.bindPopup(`<b>${vehicleId}</b><br>${make} ${model}<br>${license}`).openPopup();
-
+  
       form.reset();
     });
-
-
   </script>
+  
+ 
 </body>
 </html>

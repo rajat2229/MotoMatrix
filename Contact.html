@@ -8,63 +8,73 @@
   <style>
     * {
       box-sizing: border-box;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
+      font-family: 'Arial', sans-serif;
     }
 
     body {
-      background: #fff;
+      margin: 0;
+      background: #f9f9f9;
       color: #222;
-      line-height: 1.6;
     }
 
-    /*header {
+    header {
+      background: #111;
+      padding: 15px 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: #111;
-      padding: 15px 30px;
-      color: white;
     }
 
-    header .logo img {
+    .logo img {
       height: 40px;
     }
-*/
-    nav a {
+
+    .navbar a {
       color: white;
       text-decoration: none;
-      margin: 0 15px;
+      margin: 0 10px;
       font-weight: 500;
     }
 
-    nav .nav-btn {
+    .nav-btn {
       background-color: #1a1aff;
       padding: 8px 15px;
       border-radius: 5px;
+      color: white;
     }
 
-    .contact-section {
-      display: flex;
-      flex-wrap: wrap;
-      padding: 60px 10%;
+    .contact-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 40px;
+      padding: 60px 10%;
+      align-items: center;
+      background-color: white;
+    }
+
+    .contact-image img {
+      width: 70%;
+      
+      border-radius: 2px;
+     
     }
 
     .contact-form {
-      flex: 2;
-      min-width: 300px;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .contact-form h1 {
-      font-size: 2.5rem;
       margin-bottom: 10px;
+      font-size: 2rem;
+      color: #111;
     }
 
     .contact-form p {
-      margin-bottom: 30px;
       color: #555;
+      margin-bottom: 25px;
     }
 
     form {
@@ -72,119 +82,60 @@
       flex-direction: column;
     }
 
-    input, select, textarea {
+    form input,
+    form select,
+    form textarea {
+      padding: 12px;
       margin-bottom: 15px;
-      padding: 12px;
-      font-size: 1rem;
+      border-radius: 6px;
       border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    button {
-      padding: 12px;
-      background-color: #007bff;
-      color: white;
       font-size: 1rem;
+    }
+
+    form button {
+      width: fit-content;
+      padding: 10px 20px;
+      background-color: #0b5394;
+      color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
+      font-size: 1rem;
       cursor: pointer;
-      width: 120px;
+      transition: background 0.3s ease;
     }
 
-    .contact-info {
-      flex: 1;
-      min-width: 250px;
+    form button:hover {
+      background-color: #0b5394;
     }
 
-    .contact-info h3 {
-      margin-top: 0;
-      font-size: 1.3rem;
-      margin-bottom: 10px;
-    }
+    
 
-    .contact-info p {
-      margin-bottom: 10px;
-      color: #444;
-    }
-
-    .contact-info a {
-      color: #007b00;
-      text-decoration: none;
-      display: block;
-      margin-bottom: 10px;
-    }
-
-    footer {
-      background: #f5f5f5;
-      padding: 40px 10%;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      font-size: 0.95rem;
-    }
-
-    footer div {
-      flex: 1;
-      min-width: 200px;
-      margin-bottom: 20px;
-    }
-
-    footer h4 {
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
-
-    footer ul {
-      list-style: none;
-      padding-left: 0;
-    }
-
-    footer ul li {
-      margin-bottom: 8px;
-    }
-
-    footer ul li a {
-      text-decoration: none;
-      color: #444;
-    }
+    
 
     @media (max-width: 768px) {
-      .contact-section {
-        flex-direction: column;
+      .contact-wrapper {
+        grid-template-columns: 1fr;
         padding: 30px 5%;
       }
 
-      header {
-        flex-direction: column;
-        text-align: center;
-      }
-
-      nav {
-        margin-top: 10px;
-      }
-
-      .contact-form h1 {
-        font-size: 2rem;
+      .contact-image {
+        order: 2;
+        margin-top: 30px;
       }
     }
   </style>
 </head>
 <body>
 
-  <script type="module" src="auth-check.js"></script>
+<script type="module" src="auth-check.js"></script>
 
-
-
- <!-- HEADER + NAVBAR -->
- <header class="top-header">
+<!-- HEADER -->
+<header class="top-header">
   <div class="logo">
-      <a href="index.html">
-        <img src="images/img2.png" alt="Fleet Management" class="logo-img" />
-      </a>
-    </div>
-    
-    
-    
+    <a href="index.html">
+      <img src="images/img2.png" alt="Fleet Management" class="logo-img" />
+    </a>
+  </div>
   <nav class="navbar">
     <a href="index.html">Home</a>
     <div class="dropdown">
@@ -198,7 +149,6 @@
         <a href="emergency.html">Emergency Response System</a>
       </div>
     </div>
-    
     <a href="Tracking.html">Tracking</a>
     <a href="Drivers.html">Drivers</a>
     <a href="Contact.html">Contact</a>
@@ -206,82 +156,81 @@
   </nav>
 </header>
 
-  <section class="contact-section">
-    <div class="contact-form">
-      <h1>Contact Us</h1>
-      <p>Drop us a line and we’ll get back to you shortly.</p>
-      <form>
-        <input type="text" placeholder="First Name" required />
-        <input type="text" placeholder="Last Name" required />
-        <input type="text" placeholder="Company" />
-        <input type="tel" placeholder="Phone Number" />
-        <input type="email" placeholder="Email Address" required />
-        <select>
-          <option>How can we help?</option>
-          <option>Sales Inquiry</option>
-          <option>Support Request</option>
-          <option>Other</option>
-        </select>
-        <textarea rows="5" placeholder="Message"></textarea>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+<!-- CONTACT SECTION -->
+<section class="contact-wrapper">
+  <div class="contact-image">
+    <img src="images/img8.jpg" alt="Fleet Management">
+  </div>
+  <div class="contact-form">
+    <h1>Contact Us</h1>
+    <p>Need help? Have a question about your fleet? Get in touch!</p>
+    <form onsubmit="submitForm(event)">
+      <input type="text" placeholder="First Name" required />
+      <input type="text" placeholder="Last Name" required />
+      <input type="text" placeholder="Company Name" />
+      <input type="tel" placeholder="Phone Number" />
+      <input type="email" placeholder="Email Address" required />
+      <select required>
+        <option disabled selected value="">How can we help?</option>
+        <option>Sales Inquiry</option>
+        <option>Support Request</option>
+        <option>General Question</option>
+      </select>
+      <textarea placeholder="Message" rows="5" required></textarea>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+</section>
 
-    <div class="contact-info">
-      <h3>Sales</h3>
-      <p>Mon–Fri 9am–6pm (ET)</p>
-      <a href="tel:18009755304">1 (800) 975-5304 ext 1</a>
 
-      <h3>Customer Support</h3>
-      <p>Mon–Fri 8am–8pm (ET)</p>
-      <a href="mailto:help@motomatrix.com">help@motomatrix.com</a>
-      <a href="tel:18009755304">1 (800) 975-5304 ext 2</a>
 
-      <h3>Headquarters</h3>
-      <p>1900 2nd Ave North<br>Suite 300<br>Birmingham, AL 35203</p>
 
-      <h3>Other Inquiries</h3>
-      <a href="mailto:press@motomatrix.com">press@motomatrix.com</a>
-      <a href="mailto:recruiting@motomatrix.com">recruiting@motomatrix.com</a>
-    </div>
-  </section>
 
-  <footer>
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-content">
     <div>
-      <h4>Solutions</h4>
+      <h2>MOTOMATRIX</h2>
+      <p>Efficient fleet management for smart logistics.</p>
+    </div>
+    <div>
+      <h4>Quick Links</h4>
       <ul>
-        <li><a href="#">Fleet Management</a></li>
-        <li><a href="#">Fuel Tracking</a></li>
-        <li><a href="#">Maintenance Scheduling</a></li>
+        <li>Home</li>
+        <li>Features</li>
+        <li>About</li>
+        <li>Contact</li>
       </ul>
     </div>
     <div>
-      <h4>Features</h4>
+      <h4>Support</h4>
       <ul>
-        <li><a href="#">Driver Scheduling</a></li>
-        <li><a href="#">Geofencing Alerts</a></li>
-        <li><a href="#">Emergency Response</a></li>
+        <li>Help Center</li>
+        <li>FAQs</li>
+        <li>Report Issue</li>
       </ul>
     </div>
-    <div>
-      <h4>Resources</h4>
-      <ul>
-        <li><a href="#">Fleet Blog</a></li>
-        <li><a href="#">Help Center</a></li>
-        <li><a href="#">Documentation</a></li>
-      </ul>
+    <div class="footer-actions">
+      <h4>Stay Connected</h4>
+      <a href="#">Twitter</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">Instagram</a>
     </div>
-    <div>
-      <h4>Connect</h4>
-      <ul>
-        <li><a href="#">About Us</a></li>
-        <li><a href="#">Careers</a></li>
-        <li><a href="#">Partners</a></li>
-      </ul>
-    </div>
-  </footer>
+  </div>
+  <div class="footer-bottom">
+    © 2025 MOTOMATRIX. All rights reserved.
+  </div>
+</footer>
 
 
+
+<!-- Script -->
+<script>
+  function submitForm(e) {
+    e.preventDefault();
+    alert("Thank you! We’ve received your message and will respond soon.");
+  }
+</script>
 
 </body>
 </html>

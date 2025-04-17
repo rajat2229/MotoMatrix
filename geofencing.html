@@ -136,7 +136,7 @@
       <a href="Tracking.html">Tracking</a>
       <a href="Drivers.html">Drivers</a>
       <a href="Contact.html">Contact</a>
-      <a href="login.html" class="nav-btn">Login</a>
+      <a href="signout.html" class="nav-btn">Sign out</a>
     </nav>
   </header>
 
@@ -146,41 +146,40 @@
     <div id="map"></div>
   </div>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
-  <!-- Google Maps API (replace YOUR_API_KEY) -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+  
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 
   <script>
-    // Firebase Config
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_AUTH_DOMAIN",
-      databaseURL: "YOUR_DATABASE_URL",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_STORAGE_BUCKET",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
+      apiKey: "AIzaSyBx1k6F_ERnx4vYrr5IgmpCLpuSDILvOJU",
+      authDomain: "motomatrix16.firebaseapp.com",
+      projectId: "motomatrix16",
+      storageBucket: "motomatrix16.firebasestorage.app",
+      messagingSenderId: "342300897944",
+      appId: "1:342300897944:web:0f9b5ea041dc63474cd6ed",
+      measurementId: "G-5P721R5RFW"
     };
-
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
-
+  
     let map;
-
+    let vehicleMarker;
+    let geofenceCircles = [];
+  
     function initMap() {
       map = new google.maps.Map(document.getElementById("map"), {
         center: { lat: 20.5937, lng: 78.9629 }, // India Center
         zoom: 5,
       });
-
+  
+      // Load geofences from Firebase
       db.ref("geofences").on("value", (snapshot) => {
         const data = snapshot.val();
-
+        geofenceCircles = [];
+  
         if (!data) return;
-
+  
         Object.values(data).forEach((zone) => {
           const circle = new google.maps.Circle({
             strokeColor: "#ef4444",
@@ -192,18 +191,79 @@
             center: { lat: zone.lat, lng: zone.lng },
             radius: zone.radius,
           });
-
+  
+          geofenceCircles.push(circle);
+  
           new google.maps.Marker({
             position: { lat: zone.lat, lng: zone.lng },
             map,
             title: zone.name,
           });
         });
+  
+        simulateVehicleMovement();
       });
     }
-
+  
+    // Simulate vehicle moving in and out of a geofence
+    function simulateVehicleMovement() {
+      let path = [
+        { lat: 20.5937, lng: 78.9629 },
+        { lat: 21.0, lng: 79.0 },
+        { lat: 21.5, lng: 79.5 },
+        { lat: 22.0, lng: 80.0 },
+        { lat: 20.0, lng: 78.0 }
+      ];
+  
+      let index = 0;
+  
+      if (!vehicleMarker) {
+        vehicleMarker = new google.maps.Marker({
+          map,
+          title: "Vehicle",
+          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+        });
+      }
+  
+      function move() {
+        if (index >= path.length) index = 0;
+        const position = path[index];
+        vehicleMarker.setPosition(position);
+        map.setCenter(position);
+        checkGeofence(position);
+        index++;
+        setTimeout(move, 3000);
+      }
+  
+      move();
+    }
+  
+    function checkGeofence(position) {
+      let insideAny = false;
+  
+      geofenceCircles.forEach((circle) => {
+        const center = circle.getCenter();
+        const radius = circle.getRadius();
+        const distance = google.maps.geometry.spherical.computeDistanceBetween(
+          new google.maps.LatLng(position.lat, position.lng),
+          center
+        );
+  
+        if (distance <= radius) {
+          insideAny = true;
+        }
+      });
+  
+      if (!insideAny) {
+        alert("🚨 Vehicle exited all geofenced areas!");
+      }
+    }
+  
     window.onload = initMap;
   </script>
-
+  
+  <!-- Load Google Maps Geometry Library -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=geometry"></script>
+  
 </body>
 </html>
