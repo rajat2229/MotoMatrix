@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Maintenance Scheduling - MOTOMATRIX</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+
+  </style>
+</head>
+<body>
+
+  <!-- HEADER + NAVBAR -->
+  <header class="top-header">
+    <div class="logo">
+        <a href="index.html">
+          <img src="images/img2.png" alt="Fleet Management" class="logo-img" />
+        </a>
+      </div>
+      
+      
+      
+    <nav class="navbar">
+      <a href="index.html">Home</a>
+      <div class="dropdown">
+        <button class="dropbtn">Features</button>
+        <div class="dropdown-content">
+          <a href="maintenance.html">Maintenance Scheduling</a>
+          <a href="route-optimization.html">Route Optimization</a>
+          <a href="analytics.html">Reports and Analytics</a>
+          <a href="fuel.html">Fuel Management System</a>
+          <a href="geofencing.html">Geofencing Alerts</a>
+          <a href="emergency.html">Emergency Response System</a>
+        </div>
+      </div>
+      
+      <a href="Tracking.html">Tracking</a>
+      <a href="#">Drivers</a>
+      <a href="Contact.html">Contact</a>
+      <a href="login.html" class="nav-btn">Login</a>
+    </nav>
+  </header>
+
+  <h1>⛽ Fuel Monitoring Dashboard</h1>
+  <div class="chart-container">
+    <canvas id="fuelChart"></canvas>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      databaseURL: "YOUR_DATABASE_URL",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const ctx = document.getElementById('fuelChart').getContext('2d');
+
+    const fuelChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: [],
+        datasets: [{
+          label: 'Fuel Level (%)',
+          data: [],
+          backgroundColor: '#34d399',
+          borderRadius: 5
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100
+          }
+        }
+      }
+    });
+
+    db.ref("fuelData").on("value", (snapshot) => {
+      const data = snapshot.val();
+      const labels = [];
+      const values = [];
+
+      for (let vehicle in data) {
+        labels.push(vehicle);
+        values.push(data[vehicle].fuelLevel);
+      }
+
+      fuelChart.data.labels = labels;
+      fuelChart.data.datasets[0].data = values;
+      fuelChart.update();
+    });
+  </script>
+
+  
+</body>
+</html>

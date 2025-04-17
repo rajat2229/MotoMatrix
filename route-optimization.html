@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Maintenance Scheduling - MOTOMATRIX</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap&libraries=drawing,places" async defer></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .route-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .route-inputs {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .cta-button {
+      width: 100%;
+      padding: 12px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .cta-button:hover {
+      background-color: #0056b3;
+    }
+
+    .route-output {
+      margin: 30px auto;  /* This centers the container horizontally */
+  width: 80%;          /* Or whatever width you prefer */
+  text-align: center;
+    }
+
+    #map {
+      width: 100%;
+      height: 400px;
+      margin-top: 20px;
+      border: 1px solid #ddd;
+    }
+
+    .route-details {
+      margin-top: 20px;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .route-details p {
+      margin: 5px 0;
+    }
+
+  </style>
+  
+</head>
+<body>
+
+  <!-- HEADER + NAVBAR -->
+  <header class="top-header">
+    <div class="logo">
+        <a href="index.html">
+          <img src="images/img2.png" alt="Fleet Management" class="logo-img" />
+        </a>
+    </div>
+      
+    
+      
+    <nav class="navbar">
+      <a href="index.html">Home</a>
+      <div class="dropdown">
+        <button class="dropbtn">Features</button>
+        <div class="dropdown-content">
+          <a href="maintenance.html">Maintenance Scheduling</a>
+          <a href="route-optimization.html">Route Optimization</a>
+          <a href="analytics.html">Reports and Analytics</a>
+          <a href="fuel.html">Fuel Management System</a>
+          <a href="geofencing.html">Geofencing Alerts</a>
+          <a href="emergency.html">Emergency Response System</a>
+        </div>
+      </div>
+      
+      <a href="Tracking.html">Tracking</a>
+      <a href="#">Drivers</a>
+      <a href="Contact.html">Contact</a>
+      <a href="login.html" class="nav-btn">Login</a>
+    </nav>
+  </header>
+
+  <section class="route-optimization">
+    <div class="container">
+      <div class="route-header">
+        <h2>Route Optimization</h2>
+        <p>Efficiently optimize routes for your fleet based on location, vehicle type, and traffic data.</p>
+      </div>
+  
+      <div class="route-inputs">
+        <form id="routeForm">
+          <div class="input-group">
+            <label for="startLocation">Start Location</label>
+            <input type="text" id="startLocation" placeholder="Enter start location" required>
+          </div>
+          <div class="input-group">
+            <label for="endLocation">End Location</label>
+            <input type="text" id="endLocation" placeholder="Enter destination" required>
+          </div>
+          <div class="input-group">
+            <label for="vehicleType">Vehicle Type</label>
+            <select id="vehicleType" required>
+              <option value="car">Car</option>
+              <option value="truck">Truck</option>
+              <option value="van">Van</option>
+            </select>
+          </div>
+          <button type="submit" class="cta-button">Optimize Route</button>
+        </form>
+      </div>
+  
+      <div class="route-output">
+        <h3>Optimized Route</h3>
+        <div id="map" class="map-container"></div>
+        <div class="route-details">
+          <p><strong>Estimated Time:</strong> 30 minutes</p>
+          <p><strong>Distance:</strong> 15 miles</p>
+          <p><strong>Suggested Route:</strong> Main Road -> Highway 101 -> Destination</p>
+        </div>
+      </div>
+    </div>
+  </section>
+    
+  <!-- JavaScript to handle route optimization --> 
+  <script>
+    let map, directionsService, directionsRenderer;
+
+    function initMap() {
+      // Create a map centered on a specific location (e.g., San Francisco)
+      const map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 12,
+        center: { lat: 37.7749, lng: -122.4194 }  // Example coordinates (San Francisco)
+      });
+
+      // Optionally add a marker
+      const marker = new google.maps.Marker({
+        position: { lat: 37.7749, lng: -122.4194 },
+        map: map,
+        title: 'San Francisco'
+      });
+    }
+
+function getOptimizedRoute(start, end, vehicle) {
+  // Calculate the route using Google Maps Directions API
+  const request = {
+    origin: start,
+    destination: end,
+    travelMode: google.maps.TravelMode.DRIVING, // You can change it to WALKING, BICYCLING, etc.
+  };
+
+  directionsService.route(request, function(response, status) {
+    if (status === google.maps.DirectionsStatus.OK) {
+      // Show the route on the map
+      directionsRenderer.setDirections(response);
+
+      // Get the optimized route details (duration, distance)
+      const duration = response.routes[0].legs[0].duration.text;
+      const distance = response.routes[0].legs[0].distance.text;
+      const route = response.routes[0].legs[0].steps.map(step => step.instructions).join(' -> ');
+
+      // Display the optimized route details
+      document.querySelector(".route-details p:nth-child(1)").innerHTML = `<strong>Estimated Time:</strong> ${duration}`;
+      document.querySelector(".route-details p:nth-child(2)").innerHTML = `<strong>Distance:</strong> ${distance}`;
+      document.querySelector(".route-details p:nth-child(3)").innerHTML = `<strong>Suggested Route:</strong> ${route}`;
+    } else {
+      alert("Could not calculate the route. Please try again.");
+    }
+  });
+}
+
+
+  </script>
+  
+</body>
+</html>
