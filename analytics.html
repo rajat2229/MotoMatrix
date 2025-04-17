@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Maintenance Scheduling - MOTOMATRIX</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+     body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f9f9f9;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 32px;
+      color: #333;
+      margin-bottom: 40px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .stat-value {
+      font-size: 28px;
+      color: #2c3e50;
+      margin: 10px 0;
+    }
+
+    .stat-label {
+      font-size: 16px;
+      color: #777;
+    }
+
+    .charts-section {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .chart-box {
+      flex: 1;
+      min-width: 300px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .chart-placeholder {
+      width: 100%;
+      height: 250px;
+      background: repeating-linear-gradient(
+        45deg,
+        #eee,
+        #eee 10px,
+        #ddd 10px,
+        #ddd 20px
+      );
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER + NAVBAR -->
+  <header class="top-header">
+    <div class="logo">
+        <a href="index.html">
+          <img src="images/img2.png" alt="Fleet Management" class="logo-img" />
+        </a>
+      </div>
+      
+      
+      
+    <nav class="navbar">
+      <a href="index.html">Home</a>
+      <div class="dropdown">
+        <button class="dropbtn">Features</button>
+        <div class="dropdown-content">
+          <a href="maintenance.html">Maintenance Scheduling</a>
+          <a href="route-optimization.html">Route Optimization</a>
+          <a href="analytics.html">Reports and Analytics</a>
+          <a href="fuel.html">Fuel Management System</a>
+          <a href="geofencing.html">Geofencing Alerts</a>
+          <a href="emergency.html">Emergency Response System</a>
+        </div>
+      </div>
+      
+      <a href="Tracking.html">Tracking</a>
+      <a href="#">Drivers</a>
+      <a href="Contact.html">Contact</a>
+      <a href="login.html" class="nav-btn">Login</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>Reports & Analytics</h1>
+
+    <div class="report-box">
+      <h2>Total Trips</h2>
+      <p id="totalTrips">Loading...</p>
+    </div>
+
+    <div class="report-box">
+      <h2>Average Distance</h2>
+      <p id="averageDistance">Loading...</p>
+    </div>
+
+    <div class="report-box">
+      <h2>Upcoming Maintenance Alerts</h2>
+      <ul id="maintenanceAlerts">Loading...</ul>
+    </div>
+  </div>
+
+  <script>
+    // Firebase setup
+    const firebaseConfig = {
+  apiKey: "AIzaSyBx1k6F_ERnx4vYrr5IgmpCLpuSDILvOJU",
+  authDomain: "motomatrix16.firebaseapp.com",
+  projectId: "motomatrix16",
+  storageBucket: "motomatrix16.firebasestorage.app",
+  messagingSenderId: "342300897944",
+  appId: "1:342300897944:web:0f9b5ea041dc63474cd6ed",
+  measurementId: "G-5P721R5RFW"
+};
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Fetch total trips and average distance
+    db.ref('trips').once('value', (snapshot) => {
+      const trips = snapshot.val();
+      const tripArray = Object.values(trips || {});
+      document.getElementById('totalTrips').textContent = tripArray.length;
+
+      let totalDistance = 0;
+      tripArray.forEach(trip => {
+        totalDistance += parseFloat(trip.distance || 0);
+      });
+
+      const avgDistance = tripArray.length ? (totalDistance / tripArray.length).toFixed(2) : 0;
+      document.getElementById('averageDistance').textContent = `${avgDistance} km`;
+    });
+
+    // Fetch maintenance alerts
+    db.ref('vehicles').once('value', (snapshot) => {
+      const vehicles = snapshot.val();
+      const alertList = document.getElementById('maintenanceAlerts');
+      alertList.innerHTML = '';
+
+      Object.values(vehicles || {}).forEach(vehicle => {
+        if (vehicle.maintenanceDue) {
+          const li = document.createElement('li');
+          li.textContent = `${vehicle.name || 'Unnamed Vehicle'} - Due on ${vehicle.maintenanceDue}`;
+          alertList.appendChild(li);
+        }
+      });
+
+      if (!alertList.hasChildNodes()) {
+        alertList.innerHTML = '<li>No alerts</li>';
+      }
+    });
+  </script>
+
+  
+</body>
+</html>

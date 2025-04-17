@@ -1,7 +1,8 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Vehicle Tracking (Live Map) | MOTOMATRIX</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css" />
@@ -71,6 +72,53 @@
     .vehicle-item {
       margin-bottom: 10px;
     }
+
+    .logo img {
+      height: 40px;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem 0;
+      background-color: #111;
+    }
+
+    .navbar a, .dropbtn {
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: white;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    .dropdown-content a {
+      color: black;
+      padding: 0.5rem 1rem;
+      display: block;
+      text-decoration: none;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .nav-btn {
+      background-color: #007bff;
+      border-radius: 5px;
+    }
   </style>
 </head>
 <body>
@@ -80,14 +128,14 @@
 
    <!-- HEADER + NAVBAR -->
    <header class="top-header">
+
+  <!-- HEADER + NAVBAR -->
+  <header class="top-header">
     <div class="logo">
-        <a href="index.html">
-          <img src="images/img2.png" alt="Fleet Management" class="logo-img" />
-        </a>
-      </div>
-      
-      
-      
+      <a href="index.html">
+        <img src="images/img2.png" alt="Fleet Management" class="logo-img" />
+      </a>
+    </div>
     <nav class="navbar">
       <a href="index.html">Home</a>
       <div class="dropdown">
@@ -101,11 +149,10 @@
           <a href="emergency.html">Emergency Response System</a>
         </div>
       </div>
-      
       <a href="Tracking.html">Tracking</a>
-      <a href="Drivers.html">Drivers</a>
+      <a href="#">Drivers</a>
       <a href="Contact.html">Contact</a>
-      <a href="signout.html" class="nav-btn">Sign out</a>
+      <a href="login.html" class="nav-btn">Login</a>
     </nav>
   </header>
 
@@ -134,8 +181,7 @@
     const vehicleData = document.getElementById('vehicleData');
     let vehicleCount = 0;
 
-    // Initialize Leaflet map
-    const map = L.map('map').setView([20.5937, 78.9629], 5); // Centered on India
+    const map = L.map('map').setView([20.5937, 78.9629], 5);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors'
@@ -157,12 +203,10 @@
       info.innerText = `${vehicleId}: ${make} ${model}, License: ${license}, Mileage: ${mileage} km`;
       vehicleData.appendChild(info);
 
-      // Place a draggable marker on the map (randomized start position)
-      const lat = 20 + Math.random();  // Simulated location
+      // Place a draggable marker on the map
+      const lat = 20 + Math.random();
       const lng = 78 + Math.random();
-      const marker = L.marker([lat, lng], {
-        draggable: true
-      }).addTo(map);
+      const marker = L.marker([lat, lng], { draggable: true }).addTo(map);
 
       marker.bindPopup(`<b>${vehicleId}</b><br>${make} ${model}<br>${license}`).openPopup();
 
@@ -171,8 +215,5 @@
 
 
   </script>
-
- 
-
 </body>
 </html>
