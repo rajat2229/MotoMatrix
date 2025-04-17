@@ -52,6 +52,62 @@
 
 
 
+  @media (max-width: 1024px) {
+    .hero {
+      flex-direction: column;
+      text-align: center;
+      padding: 40px 20px;
+    }
+  
+    .hero-text {
+      padding-right: 0;
+    }
+  
+    .hero-image {
+      text-align: center;
+    }
+  
+    .top-header {
+      flex-direction: column;
+      height: auto;
+      padding: 20px;
+    }
+  
+    .navbar a {
+      margin-left: 10px;
+      font-size: 14px;
+    }
+  
+    .stats-container,
+    .segments-container,
+    .industries-grid,
+    .footer-content,
+    .footer-columns {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .segment-card,
+    .industry-box,
+    .stat-box,
+    .card {
+      width: 90%;
+      max-width: 320px;
+    }
+  
+    .map-container {
+      width: 100%;
+      padding: 0 10px;
+    }
+  }
+  
+
+
+
+
+
+
+
 
 
   /* Dropdown Styles */
