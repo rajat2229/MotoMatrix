@@ -16,7 +16,7 @@
     }
 
     header.top-header {
-      background-color: #1f2937; 
+      background-color: black; 
       padding: 15px;
       color: white;
       display: flex;
@@ -41,7 +41,7 @@
     .navbar .dropdown-content {
       display: none;
       position: absolute;
-      background-color: #333;
+      background-color: black;
       min-width: 160px;
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
@@ -188,7 +188,7 @@
     }
 
     footer {
-      background-color: #1f2937;
+      background-color: black;
       color: white;
       text-align: center;
       padding: 20px;
@@ -208,33 +208,33 @@
 </head>
 <body>
 
-  <!-- HEADER + NAVBAR -->
-  <header class="top-header">
-    <div class="logo">
-      <a href="index.html">
-        <img src="images/img2.png" alt="Fleet Management" class="logo-img" />
-      </a>
-    </div>
+  <script type="module" src="auth-check.js"></script>
 
-    <nav class="navbar">
-      <a href="index.html">Home</a>
-      <div class="dropdown">
-        <button class="dropbtn">Features</button>
-        <div class="dropdown-content">
-          <a href="maintenance.html">Maintenance Scheduling</a>
-          <a href="route-optimization.html">Route Optimization</a>
-          <a href="analytics.html">Reports and Analytics</a>
-          <a href="fuel.html">Fuel Management System</a>
-          <a href="geofencing.html">Geofencing Alerts</a>
-          <a href="emergency.html">Emergency Response System</a>
-        </div>
+<header class="top-header">
+  <div class="logo">
+    <a href="index.html">
+      <img src="images/img2.png" alt="Fleet Management" class="logo-img" />
+    </a>
+  </div>
+  <nav class="navbar">
+    <a href="index.html">Home</a>
+    <div class="dropdown">
+      <button class="dropbtn">Features</button>
+      <div class="dropdown-content">
+        <a href="maintenance.html">Maintenance Scheduling</a>
+        <a href="route-optimization.html">Route Optimization</a>
+        <a href="analytics.html">Reports and Analytics</a>
+        <a href="fuel.html">Fuel Management System</a>
+       
+        <a href="emergency.html">Emergency Response System</a>
       </div>
-      <a href="Tracking.html">Tracking</a>
-      <a href="#">Drivers</a>
-      <a href="Contact.html">Contact</a>
-      <a href="login.html" class="nav-btn">Login</a>
-    </nav>
-  </header>
+    </div>
+    <a href="Tracking.html">Tracking</a>
+    <a href="Drivers.html">Drivers</a>
+    <a href="Contact.html">Contact</a>
+    <a href="signout.html" class="nav-btn">Sign out</a>
+  </nav>
+</header>
 
   <div class="container">
     <h1>Reports & Analytics</h1>
@@ -302,8 +302,39 @@
     </ul>
   </div>
 
-  <footer>
-    &copy; 2025 MOTOMATRIX Fleet Management. All rights reserved.
+  <footer class="footer">
+    <div class="footer-content">
+      <div>
+        <h2>MOTOMATRIX</h2>
+        <p>Efficient fleet management for smart logistics.</p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li>Home</li>
+          <li>Features</li>
+          <li>About</li>
+          <li>Contact</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Support</h4>
+        <ul>
+          <li>Help Center</li>
+          <li>FAQs</li>
+          <li>Report Issue</li>
+        </ul>
+      </div>
+      <div class="footer-actions">
+        <h4>Stay Connected</h4>
+        <a href="#">Twitter</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">Instagram</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2025 MOTOMATRIX. All rights reserved.
+    </div>
   </footer>
 
 </body>
