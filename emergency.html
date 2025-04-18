@@ -247,7 +247,7 @@
         marker.setLatLng([lat, lon]).bindPopup('Emergency Location').openPopup();
         map.setView([lat, lon], 14);
 
-        locationText.innerText = `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+        locationText.innerText = `${lat.toFixed(4)}, ${lon.toFixed(4)}`;;
         alertBox.style.display = 'block';
       }, () => {
         locationText.innerText = 'Unable to retrieve location.';
