@@ -2,115 +2,109 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Maintenance Scheduling - MOTOMATRIX</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Route Optimization - MOTOMATRIX</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap&libraries=drawing,places" async defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- Leaflet Routing Machine CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Inter', sans-serif;
       margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+      background-color: #f5f7fa;
+    }
+
+    .main-header {
+      background-color: white;
+      color: black;
+      text-align: center;
+      padding: 1rem 2rem;
+      font-size: 1.8rem;
+      font-weight: 700;
     }
 
     .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      padding: 2rem;
+      gap: 2rem;
+      flex-wrap: wrap;
     }
 
-    .route-header {
-      text-align: center;
-      margin-bottom: 30px;
+    .card {
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+      border-radius: 12px;
+      padding: 1.5rem;
+      flex: 1;
+      min-width: 300px;
     }
 
-    .route-inputs {
+    .details-card {
+      max-width: 400px;
+    }
+
+    .details-card h2 {
+      color: #0d47a1;
+      margin-bottom: 1rem;
+    }
+
+    .detail {
+      margin-bottom: 1rem;
+    }
+
+    input[type="text"] {
       width: 100%;
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 10px;
+      padding: 0.6rem;
+      font-size: 1rem;
+      margin-top: 0.4rem;
+      border-radius: 6px;
       border: 1px solid #ccc;
-      border-radius: 8px;
-      background-color: #f9f9f9;
     }
 
-    .input-group {
-      margin-bottom: 15px;
-    }
-
-    .input-group label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-
-    .input-group input,
-    .input-group select {
-      width: 100%;
-      padding: 10px;
-      font-size: 14px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    .cta-button {
-      width: 100%;
-      padding: 12px;
-      background-color: #007bff;
+    .optimize-btn {
+      margin-top: 1rem;
+      background-color: #0d47a1;
       color: white;
       border: none;
-      border-radius: 5px;
+      padding: 0.8rem 1.5rem;
+      border-radius: 6px;
+      font-size: 1rem;
       cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
     }
 
-    .cta-button:hover {
-      background-color: #0056b3;
-    }
-
-    .route-output {
-      margin: 30px auto;  /* This centers the container horizontally */
-  width: 80%;          /* Or whatever width you prefer */
-  text-align: center;
+    .optimize-btn:hover {
+      background-color: #1565c0;
     }
 
     #map {
       width: 100%;
       height: 400px;
-      margin-top: 20px;
-      border: 1px solid #ddd;
+      border-radius: 8px;
     }
 
-    .route-details {
-      margin-top: 20px;
-      font-size: 16px;
-      color: #333;
+    @media (max-width: 900px) {
+      .container {
+        flex-direction: column;
+      }
     }
-
-    .route-details p {
-      margin: 5px 0;
-    }
-
   </style>
-  
 </head>
 <body>
+  <script type="module" src="auth-check.js"></script>
 
-  <!-- HEADER + NAVBAR -->
+  <!-- TOP NAVBAR -->
   <header class="top-header">
     <div class="logo">
-        <a href="index.html">
-          <img src="images/img2.png" alt="Fleet Management" class="logo-img" />
-        </a>
+      <a href="index.html">
+        <img src="images/img2.png" alt="Fleet Management" class="logo-img" />
+      </a>
     </div>
-      
     
-      
     <nav class="navbar">
       <a href="index.html">Home</a>
       <div class="dropdown">
@@ -120,11 +114,9 @@
           <a href="route-optimization.html">Route Optimization</a>
           <a href="analytics.html">Reports and Analytics</a>
           <a href="fuel.html">Fuel Management System</a>
-          <a href="geofencing.html">Geofencing Alerts</a>
           <a href="emergency.html">Emergency Response System</a>
         </div>
       </div>
-      
       <a href="Tracking.html">Tracking</a>
       <a href="Drivers.html">Drivers</a>
       <a href="Contact.html">Contact</a>
@@ -132,96 +124,120 @@
     </nav>
   </header>
 
-  <section class="route-optimization">
-    <div class="container">
-      <div class="route-header">
-        <h2>Route Optimization</h2>
-        <p>Efficiently optimize routes for your fleet based on location, vehicle type, and traffic data.</p>
+  <!-- PAGE TITLE -->
+  <div class="main-header">Route Optimization</div>
+
+  <div class="container">
+    <!-- Input Form -->
+    <div class="card details-card">
+      <h2>Enter Route Details</h2>
+      <div class="detail">
+        <label for="start">Start Location:</label>
+        <input type="text" id="start" placeholder="e.g., New Delhi" />
       </div>
-  
-      <div class="route-inputs">
-        <form id="routeForm">
-          <div class="input-group">
-            <label for="startLocation">Start Location</label>
-            <input type="text" id="startLocation" placeholder="Enter start location" required>
-          </div>
-          <div class="input-group">
-            <label for="endLocation">End Location</label>
-            <input type="text" id="endLocation" placeholder="Enter destination" required>
-          </div>
-          <div class="input-group">
-            <label for="vehicleType">Vehicle Type</label>
-            <select id="vehicleType" required>
-              <option value="car">Car</option>
-              <option value="truck">Truck</option>
-              <option value="van">Van</option>
-            </select>
-          </div>
-          <button type="submit" class="cta-button">Optimize Route</button>
-        </form>
+
+      <div class="detail">
+        <label for="end">Destination:</label>
+        <input type="text" id="end" placeholder="e.g., Noida" />
       </div>
-  
-      <div class="route-output">
-        <h3>Optimized Route</h3>
-        <div id="map" class="map-container"></div>
-        <div class="route-details">
-          <p><strong>Estimated Time:</strong> 30 minutes</p>
-          <p><strong>Distance:</strong> 15 miles</p>
-          <p><strong>Suggested Route:</strong> Main Road -> Highway 101 -> Destination</p>
-        </div>
+
+      <button class="optimize-btn" onclick="optimizeRoute()">Optimize Route</button>
+    </div>
+
+    <!-- Map Display -->
+    <div class="card map-card">
+      <div id="map"></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div>
+        <h2>MOTOMATRIX</h2>
+        <p>Efficient fleet management for smart logistics.</p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li>Home</li>
+          <li>Features</li>
+          <li>About</li>
+          <li>Contact</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Support</h4>
+        <ul>
+          <li>Help Center</li>
+          <li>FAQs</li>
+          <li>Report Issue</li>
+        </ul>
+      </div>
+      <div class="footer-actions">
+        <h4>Stay Connected</h4>
+        <a href="#">Twitter</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">Instagram</a>
       </div>
     </div>
-  </section>
-    
-  <!-- JavaScript to handle route optimization --> 
+    <div class="footer-bottom">
+      © 2025 MOTOMATRIX. All rights reserved.
+    </div>
+  </footer>
+
+  <!-- JS Libraries -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.min.js"></script>
+
+  <!-- Route Optimization Script -->
   <script>
-    let map, directionsService, directionsRenderer;
+    const map = L.map('map').setView([28.6139, 77.2090], 11);
 
-    function initMap() {
-      // Create a map centered on a specific location (e.g., San Francisco)
-      const map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 12,
-        center: { lat: 37.7749, lng: -122.4194 }  // Example coordinates (San Francisco)
-      });
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
 
-      // Optionally add a marker
-      const marker = new google.maps.Marker({
-        position: { lat: 37.7749, lng: -122.4194 },
-        map: map,
-        title: 'San Francisco'
+    let control;
+
+    function optimizeRoute() {
+      const start = document.getElementById('start').value;
+      const end = document.getElementById('end').value;
+
+      if (!start || !end) {
+        alert("Please enter both start and destination locations.");
+        return;
+      }
+
+      Promise.all([
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(start)}`).then(res => res.json()),
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(end)}`).then(res => res.json())
+      ]).then(([startResults, endResults]) => {
+        if (!startResults.length || !endResults.length) {
+          alert("Unable to find one or both locations.");
+          return;
+        }
+
+        const startCoords = [parseFloat(startResults[0].lat), parseFloat(startResults[0].lon)];
+        const endCoords = [parseFloat(endResults[0].lat), parseFloat(endResults[0].lon)];
+
+        if (control) map.removeControl(control);
+
+        control = L.Routing.control({
+          waypoints: [
+            L.latLng(...startCoords),
+            L.latLng(...endCoords)
+          ],
+          routeWhileDragging: false
+        }).addTo(map);
+
+        map.setView(startCoords, 13);
+      }).catch(error => {
+        console.error("Routing error:", error);
+        alert("An error occurred while fetching route.");
       });
     }
-
-function getOptimizedRoute(start, end, vehicle) {
-  // Calculate the route using Google Maps Directions API
-  const request = {
-    origin: start,
-    destination: end,
-    travelMode: google.maps.TravelMode.DRIVING, // You can change it to WALKING, BICYCLING, etc.
-  };
-
-  directionsService.route(request, function(response, status) {
-    if (status === google.maps.DirectionsStatus.OK) {
-      // Show the route on the map
-      directionsRenderer.setDirections(response);
-
-      // Get the optimized route details (duration, distance)
-      const duration = response.routes[0].legs[0].duration.text;
-      const distance = response.routes[0].legs[0].distance.text;
-      const route = response.routes[0].legs[0].steps.map(step => step.instructions).join(' -> ');
-
-      // Display the optimized route details
-      document.querySelector(".route-details p:nth-child(1)").innerHTML = `<strong>Estimated Time:</strong> ${duration}`;
-      document.querySelector(".route-details p:nth-child(2)").innerHTML = `<strong>Distance:</strong> ${distance}`;
-      document.querySelector(".route-details p:nth-child(3)").innerHTML = `<strong>Suggested Route:</strong> ${route}`;
-    } else {
-      alert("Could not calculate the route. Please try again.");
-    }
-  });
-}
-
-
   </script>
-  
 </body>
 </html>
